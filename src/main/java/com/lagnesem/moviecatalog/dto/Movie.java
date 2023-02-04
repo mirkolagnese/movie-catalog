@@ -1,6 +1,7 @@
 package com.lagnesem.moviecatalog.dto;
 
-import java.util.List;
+import com.sun.istack.NotNull;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,10 +27,15 @@ public class Movie {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "movie_id", referencedColumnName = "id")
-    private List<Rating> ratings;
+    private Set<Rating> ratings;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Director director;
+    @NotNull
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "movie_director",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "director_id"))
+    private Set<Director> directors;
 
 
     public Movie() {
@@ -50,19 +57,19 @@ public class Movie {
         this.id = id;
     }
 
-    public Director getDirector() {
-        return director;
+    public Set<Director> getDirectors() {
+        return directors;
     }
 
-    public void setDirector(Director director) {
-        this.director = director;
+    public void setDirectors(Set<Director> directors) {
+        this.directors = directors;
     }
 
-    public List<Rating> getRatings() {
+    public Set<Rating> getRatings() {
         return ratings;
     }
 
-    public void setRatings(List<Rating> ratings) {
+    public void setRatings(Set<Rating> ratings) {
         this.ratings = ratings;
     }
 }

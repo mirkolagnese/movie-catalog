@@ -6,14 +6,13 @@ This is a movie catalog CRUD application, build with Spring Boot, using basic on
 
 ### Notes and Assumptions:
 
-Due to a quick search on the internet, it seems that less than 1% of movies have more than 1 director. For the sake of
-simplicity, this exercise will consider a Movie to have one and only one Director. Of course a Director can be linked to
-many movies, thus the relationship between Movie and Director will be 0..N.
-
 The requirements say that the API should allow creation/update/deletion of Movies, Directors and Ratings. It is
 understood that a Movie can have multiple Ratings. Thus, the Rating object will have its own representation in
 persistence, with explicit
 reference to a particular movie. Relationship Movie to Rating is 1..N.
+
+It is assumed that a movie must have at least 1 Director. Thus, deletion of a director will cascade into the deletion of
+all the movies which have only that director (which will eventually cascade into the deletion of the related ratings).
 
 The application will make use of JPA. Persistence is handled by on-file H2 database, so that the application can be
 portable and deployed without any further dependency. Given the simplicity of the problem at hand and the lack of

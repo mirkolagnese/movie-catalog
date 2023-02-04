@@ -33,7 +33,7 @@ public class MovieService {
         Optional<Movie> fromDb = movieRepository.findById(movie.getId());
         if (fromDb.isPresent()) {
             Movie storedObj = fromDb.get();
-            storedObj.setDirector(movie.getDirector());
+            storedObj.setDirectors(movie.getDirectors());
             storedObj.setRatings(movie.getRatings());
             return movieRepository.saveAndFlush(storedObj);
         }

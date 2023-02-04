@@ -3,11 +3,14 @@ package com.lagnesem.moviecatalog.api;
 import com.lagnesem.moviecatalog.dto.Director;
 import com.lagnesem.moviecatalog.dto.Movie;
 import com.lagnesem.moviecatalog.dto.Rating;
+import com.lagnesem.moviecatalog.service.DirectorService;
 import com.lagnesem.moviecatalog.service.MovieService;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
+import javax.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
 
     private final MovieService movieService;
+    private final DirectorService directorService;
 
     @Autowired
-    public Controller(MovieService movieService) {
+    public Controller(MovieService movieService, DirectorService directorService) {
         this.movieService = movieService;
+        this.directorService = directorService;
     }
 
+    @Transactional
     @GetMapping("/do-something")
     public List<Movie> doSomething() {
         IntStream.rangeClosed(1, 10)
@@ -30,7 +36,7 @@ public class Controller {
                     Director director = new Director();
                     director.setName(RandomStringUtils.random(10, true, false));
                     Movie movie = new Movie();
-                    List<Rating> ratings = new ArrayList();
+                    Set<Rating> ratings = new HashSet<Rating>();
                     for (int i = 0; i < 4; i++) {
                         Rating rating = new Rating();
                         rating.setScore(ThreadLocalRandom.current().nextInt(0, 101));
@@ -39,9 +45,15 @@ public class Controller {
                     }
                     movie.setRatings(ratings);
                     movie.setTitle(String.format("Movie %s", RandomStringUtils.random(10, true, false)));
-                    movie.setDirector(director);
+                    Set<Director> directors = new HashSet<>();
+                    directors.add(director);
+                    movie.setDirectors(directors);
                     movieService.saveMovie(movie);
                 });
+
+        List<Movie> allMovies = movieService.getAllMovies();
+        Movie movie = allMovies.get(0);
+        movieService.deleteMovie(movie.getId());
         return movieService.getAllMovies();
     }
 
