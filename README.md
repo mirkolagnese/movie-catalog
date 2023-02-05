@@ -20,7 +20,7 @@ about their names. However, a retrieval of all the movies directed by a director
 API
 endpoint.
 
-For the sake of this exercise, and to keep codebase compact, different endpoints will make use of the same DTOs,
+For the sake of this exercise, and to keep the codebase compact, different endpoints will make use of the same DTOs,
 however,
 for presentation purposes, responses will have a minimum set of fields populated in the ``getAll`` endpoints to keep the
 consumption on the API human-readable. All the details will be shown in the specific ``getById`` endpoints.
@@ -31,16 +31,19 @@ complex data formats, H2 is the preferred choice, although with its limitations.
 
 In relation to this exercise, the consistency and referential integrity of the data stored will be integrally handled by
 JPA. Once the relationships are defined properly and the cascading mechanism are set correctly, there is no need to
-handle such scenarios at business logic / domain level (i.e. movie deletion deletes all comments).
+handle such scenarios at business logic / domain level (i.e. movie deletion deletes all ratings).
 
 Given the nature of the problem, and in order to provide a usable API not coupled with the implementation of the
-persistence layer, a decoupling mechanism between the presentation and persistence layer is created.
+persistence layer, a rough, unstructured decoupling mechanism between the presentation and persistence layer is created,
+at domain level.
 
 For the same reason, no beans will be drafted as interface/implementation (i.e. Rest controllers, service classes). This
 is just to avoid excessive scaffolding whilst retaining readability.
 
 Unit tests will only cover the service and controller classes, as, provided that the persistence layer is defined
 correctly and retains referencial integrity on its own, testing framework proxies does not add any value.
+
+**N.B. unit test coverage is still WIP.**
 
 ### Requirements:
 
