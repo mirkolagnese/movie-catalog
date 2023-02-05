@@ -25,65 +25,65 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class MovieCatalogController {
 
-    private final MovieCatalogService movieService;
+    private final MovieCatalogService movieCatalogService;
 
     @Autowired
-    public MovieCatalogController(MovieCatalogService movieService) {
-        this.movieService = movieService;
+    public MovieCatalogController(MovieCatalogService movieCatalogService) {
+        this.movieCatalogService = movieCatalogService;
     }
 
 
     @GetMapping("/movies")
     public List<Movie> getAllMovies(@RequestParam(name = "minimum-score") Optional<Integer> minimumScore) {
-        return minimumScore.isPresent() ? movieService.getMoviesWithMinimumScore(minimumScore.get())
-                : movieService.getAllMovies();
+        return minimumScore.isPresent() ? movieCatalogService.getMoviesWithMinimumScore(minimumScore.get())
+                : movieCatalogService.getAllMovies();
     }
 
     @GetMapping("/movies/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable("id") Long id) {
-        Movie result = movieService.getMovieById(id);
+        Movie result = movieCatalogService.getMovieById(id);
         return new ResponseEntity<>(result, result == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @GetMapping("/movies/{id}/ratings")
     public ResponseEntity<Set<Rating>> getRatingsByMovieId(@PathVariable("id") Long id) {
-        Set<Rating> result = movieService.getRatings(id);
+        Set<Rating> result = movieCatalogService.getRatings(id);
         return new ResponseEntity<>(result, result == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @PostMapping("/movies/{id}/ratings")
     public ResponseEntity addRating(@PathVariable("id") Long movieId, @Validated @RequestBody Rating rating) {
-        boolean result = movieService.addRating(movieId, rating);
+        boolean result = movieCatalogService.addRating(movieId, rating);
         return new ResponseEntity<>(result ? HttpStatus.CREATED : HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/movies/{movieId}/ratings/{ratingId}")
     public ResponseEntity updateRating(@PathVariable("movieId") Long movieId, @PathVariable("ratingId") Long ratingId,
             @Validated @RequestBody Rating rating) {
-        boolean result = movieService.updateRating(movieId, ratingId, rating);
+        boolean result = movieCatalogService.updateRating(movieId, ratingId, rating);
         return new ResponseEntity<>(result ? HttpStatus.NO_CONTENT : HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/movies/{movieId}/ratings/{ratingId}")
     public ResponseEntity deleteRating(@PathVariable("movieId") Long movieId, @PathVariable("ratingId") Long ratingId) {
-        boolean result = movieService.deleteRating(movieId, ratingId);
+        boolean result = movieCatalogService.deleteRating(movieId, ratingId);
         return new ResponseEntity<>(result ? HttpStatus.NO_CONTENT : HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/movies/{id}/directors")
     public ResponseEntity<Set<Director>> getDirectorsByMovieId(@PathVariable("id") Long id) {
-        Set<Director> result = movieService.getDirectorsByMovieId(id);
+        Set<Director> result = movieCatalogService.getDirectorsByMovieId(id);
         return new ResponseEntity<>(result, result == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @GetMapping("/directors")
     public ResponseEntity<List<Director>> getAllDirectors() {
-        return new ResponseEntity<>(movieService.getAllDirectors(), HttpStatus.OK);
+        return new ResponseEntity<>(movieCatalogService.getAllDirectors(), HttpStatus.OK);
     }
 
     @GetMapping("/directors/{id}/movies")
     public ResponseEntity<Set<Movie>> getAllMoviesByDirectorId(@PathVariable("id") Long id) {
-        Set<Movie> result = movieService.getAllMoviesByDirectorId(id);
+        Set<Movie> result = movieCatalogService.getAllMoviesByDirectorId(id);
         return new ResponseEntity<>(result, result == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
