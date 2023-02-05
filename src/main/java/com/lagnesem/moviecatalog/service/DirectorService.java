@@ -1,7 +1,7 @@
 package com.lagnesem.moviecatalog.service;
 
-import com.lagnesem.moviecatalog.dto.Director;
 import com.lagnesem.moviecatalog.infra.DirectorRepository;
+import com.lagnesem.moviecatalog.infra.entity.DirectorEntity;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -21,25 +21,25 @@ public class DirectorService {
         this.directorRepository = directorRepository;
     }
 
-    public List<Director> getAllDirectors() {
-        List<Director> result = directorRepository.findAll();
+    public List<DirectorEntity> getAllDirectors() {
+        List<DirectorEntity> result = directorRepository.findAll();
         LOGGER.info("Retrieved directors {}", result);
         return result;
     }
 
-    public Director getDirectorById(Long id) {
+    public DirectorEntity getDirectorById(Long id) {
         return directorRepository.findById(id).orElse(null);
     }
 
-    public Director saveDirector(Director director) {
+    public DirectorEntity saveDirector(DirectorEntity director) {
         LOGGER.info("Saving director {}", director);
         return directorRepository.saveAndFlush(director);
     }
 
-    public Director updateDirector(Director director) {
-        Optional<Director> fromDb = directorRepository.findById(director.getId());
+    public DirectorEntity updateDirector(DirectorEntity director) {
+        Optional<DirectorEntity> fromDb = directorRepository.findById(director.getId());
         if (fromDb.isPresent()) {
-            Director storedObj = fromDb.get();
+            DirectorEntity storedObj = fromDb.get();
             storedObj.setName(director.getName());
             return directorRepository.saveAndFlush(storedObj);
         }

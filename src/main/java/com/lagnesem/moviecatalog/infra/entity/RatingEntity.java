@@ -1,4 +1,4 @@
-package com.lagnesem.moviecatalog.dto;
+package com.lagnesem.moviecatalog.infra.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "RATING")
-public class Rating {
+public class RatingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,7 +22,7 @@ public class Rating {
     private String comment;
 
 
-    public Rating() {
+    public RatingEntity() {
 
     }
 

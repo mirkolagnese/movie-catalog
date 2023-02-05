@@ -1,4 +1,4 @@
-package com.lagnesem.moviecatalog.dto;
+package com.lagnesem.moviecatalog.infra.entity;
 
 import com.sun.istack.NotNull;
 import java.util.Set;
@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "MOVIE")
-public class Movie {
+public class MovieEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +27,7 @@ public class Movie {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "movie_id", referencedColumnName = "id")
-    private Set<Rating> ratings;
+    private Set<RatingEntity> ratings;
 
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
@@ -35,10 +35,10 @@ public class Movie {
             name = "movie_director",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "director_id"))
-    private Set<Director> directors;
+    private Set<DirectorEntity> directors;
 
 
-    public Movie() {
+    public MovieEntity() {
     }
 
     public String getTitle() {
@@ -57,19 +57,19 @@ public class Movie {
         this.id = id;
     }
 
-    public Set<Director> getDirectors() {
+    public Set<DirectorEntity> getDirectors() {
         return directors;
     }
 
-    public void setDirectors(Set<Director> directors) {
+    public void setDirectors(Set<DirectorEntity> directors) {
         this.directors = directors;
     }
 
-    public Set<Rating> getRatings() {
+    public Set<RatingEntity> getRatings() {
         return ratings;
     }
 
-    public void setRatings(Set<Rating> ratings) {
+    public void setRatings(Set<RatingEntity> ratings) {
         this.ratings = ratings;
     }
 }

@@ -14,9 +14,27 @@ reference to a particular movie. Relationship Movie to Rating is 1..N.
 It is assumed that a movie must have at least 1 Director. Thus, deletion of a director will cascade into the deletion of
 all the movies which have only that director (which will eventually cascade into the deletion of the related ratings).
 
+The owning entity of the Movie <--> Director relationship will be the Movie entity. This, from a blackbox perspective,
+would mean that movies will contain a set of directors in their details, whilst directors will only contain details
+about their names. However, a retrieval of all the movies directed by a director is still possible through a specific
+API
+endpoint.
+
+For the sake of this exercise, and to keep codebase compact, different endpoints will make use of the same DTOs,
+however,
+for presentation purposes, responses will have a minimum set of fields populated in the ``getAll`` endpoints to keep the
+consumption on the API human-readable. All the details will be shown in the specific ``getById`` endpoints.
+
 The application will make use of JPA. Persistence is handled by on-file H2 database, so that the application can be
 portable and deployed without any further dependency. Given the simplicity of the problem at hand and the lack of
 complex data formats, H2 is the preferred choice, although with its limitations.
+
+In relation to this exercise, the consistency and referential integrity of the data stored will be integrally handled by
+JPA. Once the relationships are defined properly and the cascading mechanism are set correctly, there is no need to
+handle such scenarios at business logic / domain level (i.e. movie deletion deletes all comments).
+
+Given the nature of the problem, and in order to provide a usable API not coupled with the implementation of the
+persistence layer, a decoupling mechanism between the presentation and persistence layer is created.
 
 For the same reason, no beans will be drafted as interface/implementation (i.e. Rest controllers, service classes). This
 is just to avoid excessive scaffolding whilst retaining readability.

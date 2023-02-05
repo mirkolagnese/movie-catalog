@@ -1,4 +1,4 @@
-package com.lagnesem.moviecatalog.dto;
+package com.lagnesem.moviecatalog.infra.entity;
 
 import java.util.Set;
 import javax.persistence.Column;
@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "DIRECTOR")
-public class Director {
+public class DirectorEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,9 +20,9 @@ public class Director {
     @Column(nullable = false)
     private String name;
     @ManyToMany(mappedBy = "directors", fetch = FetchType.EAGER)
-    private Set<Movie> movies;
+    private Set<MovieEntity> movies;
 
-    public Director() {
+    public DirectorEntity() {
 
     }
 
@@ -42,11 +42,11 @@ public class Director {
         this.name = name;
     }
 
-    public Set<Movie> getMovies() {
+    public Set<MovieEntity> getMovies() {
         return movies;
     }
 
-    public void setMovies(Set<Movie> movies) {
+    public void setMovies(Set<MovieEntity> movies) {
         this.movies = movies;
     }
 }

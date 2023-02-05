@@ -1,8 +1,8 @@
 package com.lagnesem.moviecatalog.infra;
 
-import com.lagnesem.moviecatalog.dto.Rating;
+import com.lagnesem.moviecatalog.infra.entity.RatingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RatingRepository extends JpaRepository<Rating, Long> {
+public interface RatingRepository extends JpaRepository<RatingEntity, Long> {
 
 }
