@@ -3,6 +3,7 @@ package com.lagnesem.moviecatalog.service;
 import com.lagnesem.moviecatalog.api.dto.Director;
 import com.lagnesem.moviecatalog.api.dto.Movie;
 import com.lagnesem.moviecatalog.api.dto.Rating;
+import com.lagnesem.moviecatalog.common.exception.NoDirectorFoundException;
 import com.lagnesem.moviecatalog.infra.DirectorRepository;
 import com.lagnesem.moviecatalog.infra.MovieRepository;
 import com.lagnesem.moviecatalog.infra.RatingRepository;
@@ -208,7 +209,8 @@ public class MovieCatalogService {
         if (ratings == null) {
             return false;
         }
-        Optional<RatingEntity> ratingEntityOptional = ratings.stream().filter(r -> ratingId == r.getId()).findFirst();
+        Optional<RatingEntity> ratingEntityOptional = ratings.stream().filter(r -> ratingId.equals(r.getId()))
+                .findFirst();
         if (!ratingEntityOptional.isPresent()) {
             return false;
         }
@@ -238,7 +240,7 @@ public class MovieCatalogService {
         if (ratings == null) {
             return false;
         }
-        boolean isDeleted = ratings.removeIf(r -> ratingId == r.getId());
+        boolean isDeleted = ratings.removeIf(r -> ratingId.equals(r.getId()));
         movieRepository.saveAndFlush(movieEntity);
         return isDeleted;
     }
@@ -250,6 +252,36 @@ public class MovieCatalogService {
      */
     public void saveMovie(MovieEntity movie) {
         movieRepository.saveAndFlush(movie);
+    }
+
+    public void reset() {
+        movieRepository.deleteAll();
+        directorRepository.deleteAll();
+    }
+
+    public Long saveDirector(Director director) {
+        DirectorEntity directorEntity = new DirectorEntity();
+        directorEntity.setName(director.getName());
+        DirectorEntity result = directorRepository.saveAndFlush(directorEntity);
+        return result.getId();
+    }
+
+    public Long saveMovie(Movie movie) {
+        Set<Director> directors = movie.getDirectors();
+        if (directors.isEmpty()) {
+            throw new NoDirectorFoundException();
+        }
+        MovieEntity movieEntity = new MovieEntity();
+        Set<DirectorEntity> directorEntities = new HashSet<>();
+        directors.stream().forEach(d -> {
+            DirectorEntity directorEntity = directorRepository.findById(d.getId())
+                    .orElseThrow(NoDirectorFoundException::new);
+            directorEntities.add(directorEntity);
+        });
+        movieEntity.setDirectors(directorEntities);
+        movieEntity.setTitle(movie.getTitle());
+        MovieEntity result = movieRepository.saveAndFlush(movieEntity);
+        return result.getId();
     }
 
 }

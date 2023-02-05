@@ -81,6 +81,16 @@ public class MovieCatalogController {
         return new ResponseEntity<>(movieCatalogService.getAllDirectors(), HttpStatus.OK);
     }
 
+    @PostMapping("/directors")
+    public ResponseEntity<Long> saveDirector(@Validated @RequestBody Director director) {
+        return new ResponseEntity<>(movieCatalogService.saveDirector(director), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/movies")
+    public ResponseEntity<Long> saveMovie(@Validated @RequestBody Movie movie) {
+        return new ResponseEntity<>(movieCatalogService.saveMovie(movie), HttpStatus.CREATED);
+    }
+
     @GetMapping("/directors/{id}/movies")
     public ResponseEntity<Set<Movie>> getAllMoviesByDirectorId(@PathVariable("id") Long id) {
         Set<Movie> result = movieCatalogService.getAllMoviesByDirectorId(id);

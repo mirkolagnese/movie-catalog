@@ -16,19 +16,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * These methods are for testing purposes only.
+ */
 @RestController
-public class Controller {
+public class MockDataController {
 
     private final MovieCatalogService movieCatalogService;
 
     @Autowired
-    public Controller(MovieCatalogService movieCatalogService) {
+    public MockDataController(MovieCatalogService movieCatalogService) {
         this.movieCatalogService = movieCatalogService;
     }
 
+    /**
+     * Creates an initial data set with random data
+     *
+     * @return
+     */
     @Transactional
-    @GetMapping("/do-something")
-    public List<Movie> doSomething() {
+    @GetMapping("/init")
+    public List<Movie> init() {
         IntStream.rangeClosed(1, 10)
                 .forEach(x -> {
                     DirectorEntity director = new DirectorEntity();
@@ -50,6 +58,14 @@ public class Controller {
                 });
 
         return movieCatalogService.getAllMovies();
+    }
+
+    /**
+     * deletes all entries from the database
+     */
+    @GetMapping("/reset")
+    public void reset() {
+        movieCatalogService.reset();
     }
 
 }
