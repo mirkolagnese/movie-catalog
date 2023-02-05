@@ -14,13 +14,15 @@ reference to a particular _Movie_. The relationship ``Movie <--> Rating`` is ``1
 
 It is assumed that a _Movie_ must have at least one _Director_. Thus, deletion of a _Director_ will cascade into the
 deletion of
-all the _Movies_ which have only that _Director_ (which will eventually cascade into the deletion of the related _
-Ratings_).
+all the _Movies_ which have only that _Director_ (which will eventually cascade into the
+deletion of the related _Ratings_).
 
 The owning entity of the ``Movie <--> Director`` relationship will be the _Movie_ entity. This, from a blackbox
 perspective,
-would mean that _Movies_ will contain a set of _Directors_ in their details, whilst _Directors_ will only contain details
-about their names. However, a retrieval of all the _Movies_ directed by a _Director_ is still possible through a specific
+would mean that _Movies_ will contain a set of _Directors_ in their details, whilst _Directors_ will only contain
+details
+about their names. However, a retrieval of all the _Movies_ directed by a _Director_ is still possible through a
+specific
 API
 endpoint.
 
