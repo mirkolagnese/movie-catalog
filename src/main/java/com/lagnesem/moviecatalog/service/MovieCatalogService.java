@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MovieCatalogService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DirectorService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MovieCatalogService.class);
 
     private final MovieRepository movieRepository;
     private final DirectorRepository directorRepository;
@@ -241,6 +241,15 @@ public class MovieCatalogService {
         boolean isDeleted = ratings.removeIf(r -> ratingId == r.getId());
         movieRepository.saveAndFlush(movieEntity);
         return isDeleted;
+    }
+
+    /**
+     * So far, for test purposes
+     *
+     * @param movie
+     */
+    public void saveMovie(MovieEntity movie) {
+        movieRepository.saveAndFlush(movie);
     }
 
 }
