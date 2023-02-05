@@ -6,10 +6,10 @@ This is a movie catalog CRUD application, build with Spring Boot, using basic on
 
 ### Notes and Assumptions:
 
-The requirements say that the API should allow creation/update/deletion of Movies, Directors and Ratings. It is
-understood that a Movie can have multiple Ratings. Thus, the Rating object will have its own representation in
+The task requires that the API should allow creation/update/deletion of _Movies_, _Directors_ and _Ratings_. It is
+understood that a _Movie_ can have multiple _Ratings_. Thus, the _Rating_ object will have its own representation in
 persistence, with explicit
-reference to a particular movie. Relationship Movie to Rating is 1..N.
+reference to a particular _Movie_. The relationship _Movie_ to _Rating_ is 1..N.
 
 It is assumed that a movie must have at least 1 Director. Thus, deletion of a director will cascade into the deletion of
 all the movies which have only that director (which will eventually cascade into the deletion of the related ratings).
