@@ -7,14 +7,17 @@ This is a movie catalog CRUD application, build with Spring Boot, using basic on
 ### Notes and Assumptions:
 
 The task requires that the API should allow creation/update/deletion of _Movies_, _Directors_ and _Ratings_. It is
-understood that a _Movie_ can have multiple _Ratings_, and each _Rating_ pertains to one and only one _Movie_. Thus, the _Rating_ object will have its own representation in
+understood that a _Movie_ can have multiple _Ratings_, and each _Rating_ pertains to one and only one _Movie_. Thus,
+the _Rating_ object will have its own representation in
 persistence, with explicit
-reference to a particular _Movie_. The relationship _``Movie_ <--> _Rating``_ is 1..N.
+reference to a particular _Movie_. The relationship ``Movie <--> Rating`` is ``1..N``.
 
-It is assumed that a movie must have at least 1 _Director_. Thus, deletion of a _Director_ will cascade into the deletion of
-all the movies which have only that director (which will eventually cascade into the deletion of the related ratings).
+It is assumed that a movie must have at least one _Director_. Thus, deletion of a _Director_ will cascade into the
+deletion of
+all the movies which have only that _Director_ (which will eventually cascade into the deletion of the related _Ratings_).
 
-The owning entity of the ``Movie <--> Director`` relationship will be the Movie entity. This, from a blackbox perspective,
+The owning entity of the ``Movie <--> Director`` relationship will be the Movie entity. This, from a blackbox
+perspective,
 would mean that movies will contain a set of directors in their details, whilst directors will only contain details
 about their names. However, a retrieval of all the movies directed by a director is still possible through a specific
 API
