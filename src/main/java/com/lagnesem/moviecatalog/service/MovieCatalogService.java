@@ -39,11 +39,34 @@ public class MovieCatalogService {
     /**
      * Retrieves all movies. Only titles are populated for ease of readability
      *
-     * @return
+     * @return a list of all movies
      */
     public List<Movie> getAllMovies() {
+        LOGGER.info("Fetching all movies");
         List<MovieEntity> allEntities = movieRepository.findAll();
         return allEntities.stream().map(m -> {
+            LOGGER.info("Movie with ID {} fetched", m.getId());
+            Movie movie = new Movie(m.getId(), m.getTitle(), null, null);
+            return movie;
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a list of movies with at least a rating with a score equal or higher than the value passed in input
+     *
+     * @param score
+     * @return
+     */
+    public List<Movie> getMoviesWithMinimumScore(int score) {
+        LOGGER.info("Fetching all movies with score equal or greather than {}", score);
+        List<MovieEntity> allEntities = movieRepository.findAll();
+        return allEntities.stream().filter(m ->
+                m.getRatings().stream().anyMatch(r -> {
+                    boolean isHigher = r.getScore() >= score;
+                    LOGGER.info("Movie {} - rating with score {} fetched - {}", m.getId(), r.getScore(), isHigher);
+                    return isHigher;
+                })
+        ).map(m -> {
             LOGGER.info("Movie with ID {} fetched", m.getId());
             Movie movie = new Movie(m.getId(), m.getTitle(), null, null);
             return movie;

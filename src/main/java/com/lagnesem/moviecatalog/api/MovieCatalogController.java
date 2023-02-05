@@ -4,6 +4,7 @@ import com.lagnesem.moviecatalog.api.dto.Movie;
 import com.lagnesem.moviecatalog.api.dto.Rating;
 import com.lagnesem.moviecatalog.service.MovieCatalogService;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
@@ -29,9 +31,11 @@ public class MovieCatalogController {
         this.movieService = movieService;
     }
 
+
     @GetMapping("/movies")
-    public List<Movie> getAllMovies() {
-        return movieService.getAllMovies();
+    public List<Movie> getAllMovies(@RequestParam(name = "minimum-score") Optional<Integer> minimumScore) {
+        return minimumScore.isPresent() ? movieService.getMoviesWithMinimumScore(minimumScore.get())
+                : movieService.getAllMovies();
     }
 
     @GetMapping("/movies/{id}")
