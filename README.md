@@ -39,6 +39,9 @@ persistence layer, a decoupling mechanism between the presentation and persisten
 For the same reason, no beans will be drafted as interface/implementation (i.e. Rest controllers, service classes). This
 is just to avoid excessive scaffolding whilst retaining readability.
 
+Unit tests will only cover the service and controller classes, as, provided that the persistence layer is defined
+correctly and retains referencial integrity on its own, testing framework proxies does not add any value.
+
 ### Requirements:
 
 Create a program that maintains a Movie catalog allowing creation/update/deletion of:

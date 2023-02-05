@@ -6,6 +6,7 @@ import com.lagnesem.moviecatalog.api.dto.Rating;
 import com.lagnesem.moviecatalog.infra.DirectorRepository;
 import com.lagnesem.moviecatalog.infra.MovieRepository;
 import com.lagnesem.moviecatalog.infra.RatingRepository;
+import com.lagnesem.moviecatalog.infra.entity.DirectorEntity;
 import com.lagnesem.moviecatalog.infra.entity.MovieEntity;
 import com.lagnesem.moviecatalog.infra.entity.RatingEntity;
 import java.util.Collections;
@@ -109,6 +110,57 @@ public class MovieCatalogService {
         return movieEntity.getRatings().stream()
                 .map(r -> new Rating(r.getId(), r.getScore(), r.getComment())).collect(
                         Collectors.toSet());
+    }
+
+    /**
+     * Returns all the directors for a specific movie
+     *
+     * @param movieId
+     * @return set of directors
+     */
+    public Set<Director> getDirectorsByMovieId(Long movieId) {
+        Optional<MovieEntity> entityOptional = movieRepository.findById(movieId);
+        if (!entityOptional.isPresent()) {
+            return null;
+        }
+        MovieEntity movieEntity = entityOptional.get();
+        if (movieEntity.getRatings() == null) {
+            return Collections.EMPTY_SET;
+        }
+        return movieEntity.getDirectors().stream()
+                .map(d -> new Director(d.getId(), d.getName())).collect(
+                        Collectors.toSet());
+    }
+
+    /**
+     * Returns all the directors
+     *
+     * @return set of directors
+     */
+    public List<Director> getAllDirectors() {
+        LOGGER.info("Fetching all movies");
+        List<DirectorEntity> allEntities = directorRepository.findAll();
+        return allEntities.stream().map(m -> {
+            LOGGER.info("Director with ID {} fetched", m.getId());
+            Director director = new Director(m.getId(), m.getName());
+            return director;
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * Gets all the movies by director Id
+     */
+    public Set<Movie> getAllMoviesByDirectorId(Long directorId) {
+        Optional<DirectorEntity> entityOptional = directorRepository.findById(directorId);
+        if (!entityOptional.isPresent()) {
+            return null;
+        }
+        Set<MovieEntity> allEntities = entityOptional.get().getMovies();
+        return allEntities.stream().map(m -> {
+            LOGGER.info("Movie with ID {} fetched", m.getId());
+            Movie movie = new Movie(m.getId(), m.getTitle(), null, null);
+            return movie;
+        }).collect(Collectors.toSet());
     }
 
     /**

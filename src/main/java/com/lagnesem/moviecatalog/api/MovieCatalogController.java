@@ -1,5 +1,6 @@
 package com.lagnesem.moviecatalog.api;
 
+import com.lagnesem.moviecatalog.api.dto.Director;
 import com.lagnesem.moviecatalog.api.dto.Movie;
 import com.lagnesem.moviecatalog.api.dto.Rating;
 import com.lagnesem.moviecatalog.service.MovieCatalogService;
@@ -67,6 +68,23 @@ public class MovieCatalogController {
     public ResponseEntity deleteRating(@PathVariable("movieId") Long movieId, @PathVariable("ratingId") Long ratingId) {
         boolean result = movieService.deleteRating(movieId, ratingId);
         return new ResponseEntity<>(result ? HttpStatus.NO_CONTENT : HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/movies/{id}/directors")
+    public ResponseEntity<Set<Director>> getDirectorsByMovieId(@PathVariable("id") Long id) {
+        Set<Director> result = movieService.getDirectorsByMovieId(id);
+        return new ResponseEntity<>(result, result == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+    }
+
+    @GetMapping("/directors")
+    public ResponseEntity<List<Director>> getAllDirectors() {
+        return new ResponseEntity<>(movieService.getAllDirectors(), HttpStatus.OK);
+    }
+
+    @GetMapping("/directors/{id}/movies")
+    public ResponseEntity<Set<Movie>> getAllMoviesByDirectorId(@PathVariable("id") Long id) {
+        Set<Movie> result = movieService.getAllMoviesByDirectorId(id);
+        return new ResponseEntity<>(result, result == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
 //    @PostMapping
