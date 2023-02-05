@@ -12,14 +12,15 @@ the _Rating_ object will have its own representation in
 persistence, with explicit
 reference to a particular _Movie_. The relationship ``Movie <--> Rating`` is ``1..N``.
 
-It is assumed that a movie must have at least one _Director_. Thus, deletion of a _Director_ will cascade into the
+It is assumed that a _Movie_ must have at least one _Director_. Thus, deletion of a _Director_ will cascade into the
 deletion of
-all the movies which have only that _Director_ (which will eventually cascade into the deletion of the related _Ratings_).
+all the _Movies_ which have only that _Director_ (which will eventually cascade into the deletion of the related _
+Ratings_).
 
-The owning entity of the ``Movie <--> Director`` relationship will be the Movie entity. This, from a blackbox
+The owning entity of the ``Movie <--> Director`` relationship will be the _Movie_ entity. This, from a blackbox
 perspective,
-would mean that movies will contain a set of directors in their details, whilst directors will only contain details
-about their names. However, a retrieval of all the movies directed by a director is still possible through a specific
+would mean that _Movies_ will contain a set of _Directors_ in their details, whilst _Directors_ will only contain details
+about their names. However, a retrieval of all the _Movies_ directed by a _Director_ is still possible through a specific
 API
 endpoint.
 
@@ -34,7 +35,7 @@ complex data formats, H2 is the preferred choice, although with its limitations.
 
 In relation to this exercise, the consistency and referential integrity of the data stored will be integrally handled by
 JPA. Once the relationships are defined properly and the cascading mechanism are set correctly, there is no need to
-handle such scenarios at business logic / domain level (i.e. movie deletion deletes all ratings).
+handle such scenarios at business logic / domain level (i.e. _Movie_ deletion deletes all _Ratings_).
 
 Given the nature of the problem, and in order to provide a usable API not coupled with the implementation of the
 persistence layer, a rough, unstructured decoupling mechanism between the presentation and persistence layer is created,
