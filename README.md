@@ -19,7 +19,7 @@ deletion of the related _Ratings_).
 
 The owning entity of the ``Movie <--> Director`` relationship will be the _Movie_ entity. This, from a blackbox
 perspective,
-would mean that _Movies_ will contain a set of _Directors_ in their details, whilst _Directors_ will only contain
+means that _Movies_  contain a set of _Directors_ in their details, whilst _Directors_ contain only
 details
 about their names. However, a retrieval of all the _Movies_ directed by a _Director_ is still possible through a
 specific
@@ -31,19 +31,19 @@ however,
 for presentation purposes, responses will have a minimum set of fields populated in the ``getAll`` endpoints to keep the
 consumption on the API human-readable. All the details will be shown in the specific ``getById`` endpoints.
 
-The application will make use of JPA. Persistence is handled by on-file H2 database, so that the application can be
+The application makes use of JPA. Persistence is handled by on-file H2 database, so that the application can be
 portable and deployed without any further dependency. Given the simplicity of the problem at hand and the lack of
 complex data formats, H2 is the preferred choice, although with its limitations.
 
-In relation to this exercise, the consistency and referential integrity of the data stored will be integrally handled by
-JPA. Once the relationships are defined properly and the cascading mechanism are set correctly, there is no need to
+In relation to this exercise, the consistency and referential integrity of the data stored are integrally handled by
+JPA. Once the relationships are defined properly and the cascading mechanisms are set correctly, there is no need to
 handle such scenarios at business logic / domain level (i.e. _Movie_ deletion deletes all _Ratings_).
 
 Given the nature of the problem, and in order to provide a usable API not coupled with the implementation of the
 persistence layer, a rough, unstructured decoupling mechanism between the presentation and persistence layer is created,
 at domain level.
 
-For the same reason, no beans will be drafted as interface/implementation (i.e. Rest controllers, service classes). This
+For the same reason, no beans are drafted as interface/implementation (i.e. REST controllers, service classes). This
 is just to avoid excessive scaffolding whilst retaining readability.
 
 Unit tests will only cover the service and controller classes, as, provided that the persistence layer is defined

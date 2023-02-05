@@ -32,31 +32,58 @@ public class MovieCatalogController {
         this.movieCatalogService = movieCatalogService;
     }
 
-
+    /**
+     * Retrieves all the movies
+     * @param minimumScore optional, if passed, only movies with rating equal or above this value are returned
+     * @return
+     */
     @GetMapping("/movies")
     public List<Movie> getAllMovies(@RequestParam(name = "minimum-score") Optional<Integer> minimumScore) {
         return minimumScore.isPresent() ? movieCatalogService.getMoviesWithMinimumScore(minimumScore.get())
                 : movieCatalogService.getAllMovies();
     }
 
+    /**
+     * Retrieves a movie
+     * @param id
+     * @return
+     */
     @GetMapping("/movies/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable("id") Long id) {
         Movie result = movieCatalogService.getMovieById(id);
         return new ResponseEntity<>(result, result == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
+    /**
+     * Retrieves all ratings for a given movie
+     * @param id
+     * @return
+     */
     @GetMapping("/movies/{id}/ratings")
     public ResponseEntity<Set<Rating>> getRatingsByMovieId(@PathVariable("id") Long id) {
         Set<Rating> result = movieCatalogService.getRatings(id);
         return new ResponseEntity<>(result, result == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
+    /**
+     * Adds a rating to a given movie
+     * @param movieId
+     * @param rating
+     * @return
+     */
     @PostMapping("/movies/{id}/ratings")
     public ResponseEntity addRating(@PathVariable("id") Long movieId, @Validated @RequestBody Rating rating) {
         boolean result = movieCatalogService.addRating(movieId, rating);
         return new ResponseEntity<>(result ? HttpStatus.CREATED : HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * updates a given rate
+     * @param movieId
+     * @param ratingId
+     * @param rating
+     * @return
+     */
     @PutMapping("/movies/{movieId}/ratings/{ratingId}")
     public ResponseEntity updateRating(@PathVariable("movieId") Long movieId, @PathVariable("ratingId") Long ratingId,
             @Validated @RequestBody Rating rating) {
@@ -64,52 +91,67 @@ public class MovieCatalogController {
         return new ResponseEntity<>(result ? HttpStatus.NO_CONTENT : HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Deletes a rating
+     * @param movieId
+     * @param ratingId
+     * @return
+     */
     @DeleteMapping("/movies/{movieId}/ratings/{ratingId}")
     public ResponseEntity deleteRating(@PathVariable("movieId") Long movieId, @PathVariable("ratingId") Long ratingId) {
         boolean result = movieCatalogService.deleteRating(movieId, ratingId);
         return new ResponseEntity<>(result ? HttpStatus.NO_CONTENT : HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Retrieves the directors for a given movie
+     * @param id
+     * @return
+     */
     @GetMapping("/movies/{id}/directors")
     public ResponseEntity<Set<Director>> getDirectorsByMovieId(@PathVariable("id") Long id) {
         Set<Director> result = movieCatalogService.getDirectorsByMovieId(id);
         return new ResponseEntity<>(result, result == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
+    /**
+     * Retrieves all the directors
+     * @return
+     */
     @GetMapping("/directors")
     public ResponseEntity<List<Director>> getAllDirectors() {
         return new ResponseEntity<>(movieCatalogService.getAllDirectors(), HttpStatus.OK);
     }
 
+    /**
+     * Saves a director
+     * @param director
+     * @return
+     */
     @PostMapping("/directors")
     public ResponseEntity<Long> saveDirector(@Validated @RequestBody Director director) {
         return new ResponseEntity<>(movieCatalogService.saveDirector(director), HttpStatus.CREATED);
     }
 
+    /**
+     * Saves a movie
+     * @param movie
+     * @return
+     */
     @PostMapping("/movies")
     public ResponseEntity<Long> saveMovie(@Validated @RequestBody Movie movie) {
         return new ResponseEntity<>(movieCatalogService.saveMovie(movie), HttpStatus.CREATED);
     }
 
+    /**
+     * Retrieves the movies for a given director
+     * @param id
+     * @return
+     */
     @GetMapping("/directors/{id}/movies")
     public ResponseEntity<Set<Movie>> getAllMoviesByDirectorId(@PathVariable("id") Long id) {
         Set<Movie> result = movieCatalogService.getAllMoviesByDirectorId(id);
         return new ResponseEntity<>(result, result == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
-//    @PostMapping
-//    public Long saveMovie(@Validated @RequestBody MovieEntity movie) {
-//        return movieService.saveMovie(movie);
-//    }
-//
-//    @PutMapping("/{id}")
-//    public Long updateMovie(@PathVariable("id") Long id, @Validated @RequestBody MovieEntity movie) {
-//        movieService.updateMovie(movie);
-//        return null;
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteMovie(@PathVariable("id") Long id) {
-//        movieService.deleteMovie(id);
-//    }
 }
